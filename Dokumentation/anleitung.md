@@ -187,19 +187,21 @@
     SOURCE C:/Daten/TBZ/Module/m141/unser_repo/M141-/scripts/datafix.sql
 
 ---
+
+        SET SQL_MODE = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION,NO_AUTO_VALUE_ON_ZERO';
+        INSERT INTO tbl_land (Land_ID, Land) VALUES (0, 'unspecified');
+        INSERT INTO tbl_land (Land_ID, Land) VALUES (176, 'unspecified');
+        DELETE FROM tbl_land WHERE Land_id = 212;
+        DELETE FROM tbl_land WHERE Land_id = 212;
+        INSERT INTO tbl_land 212,"Russische Foederation, Russland"
+        DELETE FROM tbl_land WHERE Land_id = 220;
+        SET SQL_MODE = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 ## Constraints hinzufügen
 
     SOURCE C:/Daten/TBZ/Module/m141/unser_repo/M141-/scripts/constraints.sql
 
 ----
-        SET SQL_MODE = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION,NO_AUTO_VALUE_ON_ZERO';
-        INSERT INTO tbl_land (Land_ID, Land) VALUES (0, 'unspecified');
-        INSERT INTO tbl_land (Land_ID, Land) VALUES (176, 'unspecified');
-        DELETE FROM tbl_land WHERE Land_id = 212;
-        INSERT INTO tbl_land 212,"Russische Foederation, Russland"
-        DELETE FROM tbl_land WHERE Land_id = 220;
-        SET SQL_MODE = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
-
+        
         ALTER TABLE tbl_buchung
         ADD CONSTRAINT FK_Personen_ID FOREIGN KEY (Personen_FS) REFERENCES tbl_personen(Personen_ID);
 
