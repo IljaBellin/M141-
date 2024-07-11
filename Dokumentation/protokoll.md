@@ -119,7 +119,7 @@
         FULLTEXT KEY `Leistung_Text` (`Leistung_Text`)
         ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci COMMENT='enthält einzelne Buchungspositionen' AUTO_INCREMENT=4055 ;
 
-### Tables anpassen/Foreign Key Constraints erstellen
+### Tables anpassen
 
     SOURCE C:/Daten/TBZ/Module/m141/unser_repo/M141-/scripts/tablechanges.sql
 
@@ -196,6 +196,7 @@
         INSERT INTO tbl_land 212,"Russische Foederation, Russland"
         DELETE FROM tbl_land WHERE Land_id = 220;
         SET SQL_MODE = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
+        
 ## Constraints hinzufügen
 
     SOURCE C:/Daten/TBZ/Module/m141/unser_repo/M141-/scripts/constraints.sql
