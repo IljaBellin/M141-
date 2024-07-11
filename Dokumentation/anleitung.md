@@ -133,20 +133,7 @@
         ALTER TABLE tbl_benutzer ENGINE = InnoDB;
         ALTER TABLE tbl_buchung ENGINE = InnoDB;
 
-        ALTER TABLE tbl_buchung
-        ADD CONSTRAINT FK_Personen_ID FOREIGN KEY (Personen_FS) REFERENCES tbl_personen(Personen_ID);
-
-        ALTER TABLE tbl_buchung
-        ADD CONSTRAINT FK_Land_ID FOREIGN KEY (Land_FS) REFERENCES tbl_land(Land_ID);
-
-        ALTER TABLE tbl_positionen
-        ADD CONSTRAINT FK_Leistung_ID FOREIGN KEY (Leistung_FS) REFERENCES tbl_leistung(LeistungID);
-
-        ALTER TABLE tbl_positionen
-        ADD CONSTRAINT FK_Buchungs_ID FOREIGN KEY (Buchungs_FS) REFERENCES tbl_buchung(Buchungs_ID);
-
-        ALTER TABLE tbl_positionen
-        ADD CONSTRAINT FK_Benutzer_ID FOREIGN KEY (Benutzer_FS) REFERENCES tbl_benutzer(Benutzer_ID);
+        
 
 ## Daten importieren
 
@@ -200,7 +187,11 @@
     SOURCE C:/Daten/TBZ/Module/m141/unser_repo/M141-/scripts/datafix.sql
 
 ---
+## Constraints hinzufügen
 
+    SOURCE C:/Daten/TBZ/Module/m141/unser_repo/M141-/scripts/constraints.sql
+
+----
         SET SQL_MODE = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION,NO_AUTO_VALUE_ON_ZERO';
         INSERT INTO tbl_land (Land_ID, Land) VALUES (0, 'unspecified');
         INSERT INTO tbl_land (Land_ID, Land) VALUES (176, 'unspecified');
@@ -208,6 +199,21 @@
         INSERT INTO tbl_land 212,"Russische Foederation, Russland"
         DELETE FROM tbl_land WHERE Land_id = 220;
         SET SQL_MODE = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
+
+        ALTER TABLE tbl_buchung
+        ADD CONSTRAINT FK_Personen_ID FOREIGN KEY (Personen_FS) REFERENCES tbl_personen(Personen_ID);
+
+        ALTER TABLE tbl_buchung
+        ADD CONSTRAINT FK_Land_ID FOREIGN KEY (Land_FS) REFERENCES tbl_land(Land_ID);
+
+        ALTER TABLE tbl_positionen
+        ADD CONSTRAINT FK_Leistung_ID FOREIGN KEY (Leistung_FS) REFERENCES tbl_leistung(LeistungID);
+
+        ALTER TABLE tbl_positionen
+        ADD CONSTRAINT FK_Buchungs_ID FOREIGN KEY (Buchungs_FS) REFERENCES tbl_buchung(Buchungs_ID);
+
+        ALTER TABLE tbl_positionen
+        ADD CONSTRAINT FK_Benutzer_ID FOREIGN KEY (Benutzer_FS) REFERENCES tbl_benutzer(Benutzer_ID);
 
 ## Duplikate Listen
 
@@ -248,7 +254,7 @@
 
 ## Zugriff regeln
 
-SOURCE C:/Daten/TBZ/Module/m141/unser_repo/M141-/scripts/access.sql
+    SOURCE C:/Daten/TBZ/Module/m141/unser_repo/M141-/scripts/access.sql
 
 ---
 
@@ -294,3 +300,40 @@ SOURCE C:/Daten/TBZ/Module/m141/unser_repo/M141-/scripts/access.sql
     GRANT ALL PRIVILEGES ON *.* TO 'adm'@'%';
 
     flush privileges;
+
+## Auf Duplikate testen
+
+    SOURCE C:/Daten/TBZ/Module/m141/unser_repo/M141-/scripts/dupes.sql
+
+-----
+
+            
+        SELECT Benutzername, COUNT(*) as count
+        FROM tbl_benutzer
+        GROUP BY Benutzername
+        HAVING count > 1;
+
+        SELECT Personen_FS, Ankunft, Abreise, COUNT(*) as count
+        FROM tbl_buchung
+        GROUP BY Personen_FS, Ankunft, Abreise
+        HAVING count > 1;
+
+        SELECT Land, COUNT(*) as count
+        FROM tbl_land
+        GROUP BY Land
+        HAVING count > 1;
+
+        SELECT Beschreibung, COUNT(*) as count
+        FROM tbl_leistung
+        GROUP BY Beschreibung
+        HAVING count > 1;
+
+        SELECT Vorname, Name, Strasse, COUNT(*) as count
+        FROM tbl_personen
+        GROUP BY Vorname, Name, Strasse
+        HAVING count > 1;
+
+        SELECT Buchungs_FS, Konto, Leistung_Text, COUNT(*) as count
+        FROM tbl_positionen
+        GROUP BY Buchungs_FS, Konto, Leistung_Text
+        HAVING count > 1;
